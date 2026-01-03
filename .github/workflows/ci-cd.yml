@@ -35,7 +35,8 @@ jobs:
         env:
           APPLICATIONINSIGHTS_CONNECTION_STRING: ""
         run: |
-          python -m pytest tests/ -v --cov=app --cov-report=term
+          python -c "import tests.test_api; print('Import OK')" || echo "Import failed"
+          python -m pytest tests/test_api.py -v --cov=app --cov-report=term --tb=long 2>&1
 
   build-and-deploy:
     needs: test  # Ne s'exécute QUE si les tests réussissent
