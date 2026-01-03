@@ -27,7 +27,13 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
+      - name: Create dummy model file
+        run: |
+          mkdir -p model
+          python -c "import joblib; from sklearn.ensemble import RandomForestClassifier; model = RandomForestClassifier(); joblib.dump(model, 'model/churn_model.pkl')"
       - name: Run tests with coverage
+        env:
+          APPLICATIONINSIGHTS_CONNECTION_STRING: ""
         run: |
           python -m pytest tests/ -v --cov=app --cov-report=term
 
